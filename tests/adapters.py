@@ -524,8 +524,8 @@ def run_cross_entropy(
     Returns:
         Float[Tensor, ""]: The average cross-entropy loss across examples.
     """
-    raise NotImplementedError
-
+    from cs336_basics.transformer import cross_entropy_loss
+    return cross_entropy_loss(inputs, targets)
 
 def run_gradient_clipping(parameters: Iterable[torch.nn.Parameter], max_l2_norm: float) -> None:
     """Given a set of parameters, clip their combined gradients to have l2 norm at most max_l2_norm.

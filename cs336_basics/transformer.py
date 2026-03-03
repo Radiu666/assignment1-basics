@@ -218,6 +218,15 @@ class TransformerLM(nn.Module):
         logits = self.output_projection(x_embedding)
         return logits
 
+def cross_entropy_loss(logits: torch.Tensor, target_indices):
+    max_l = logits.max(dim=-1, keepdim=True).values
+    shifted_logits = logits - max_l
+    log_sum_exp = torch.log(torch.exp(shifted_logits).sum(dim=-1))
+    target_logits = torch.gather(shifted_logits, dim=-1, index=target_indices.unsqueeze(-1))
+    target_logits = target_logits.squeeze(-1)
+    loss = - target_logits + log_sum_exp
+    return loss.mean()
+
 if __name__ == "__main__":
     # # Test the Linear layer
     # batch_size = 2
